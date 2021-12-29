@@ -1,71 +1,73 @@
-import { Button } from "antd";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import React, { useState } from "react";
+import styles from "../styles/Home.module.scss";
 import "antd/dist/antd.css";
-export default function Home() {
+import Head from "next/head";
+
+import Intro from "../components/modal/intro";
+import { Button } from "antd";
+import { LoginOutlined, UserOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
+
+const Home = () => {
+  const router = useRouter();
+  const [isOpen, setOpen] = useState<boolean>(false);
+
+  const onDirect = (url: string) => {
+    router.push(url);
+  };
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div>
+      <Intro isOpen={isOpen} onClose={() => setOpen(false)} />
+      <div className={styles.container}>
+        <Head>
+          <title>Calore | Point of Sale System</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        <br />
-        <Button type="primary">Primary Button</Button>
-        <br />
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p className="text-red-500">
-              Find in-depth information about Next.js features and API.
+        <main className={styles.main}>
+          <div>
+            <img
+              src="/assets/calore-black.png"
+              alt="calore-logo"
+              className="w-64"
+            />
+          </div>
+          <div className="my-10">
+            <p
+              onClick={() => setOpen(true)}
+              className="text-lg cursor-pointer hover:text-blue-500 font-medium"
+            >
+              What is Calore System ?
             </p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+          </div>
+          <div className="flex items-center justify-center ">
+            <Button
+              type="primary"
+              size={"large"}
+              onClick={() => onDirect("/authentication/register")}
+            >
+              <div className="flex items-center">
+                <span className="mr-2">Register</span>
+                <UserOutlined />
+              </div>
+            </Button>
+            <Button
+              className="ml-4"
+              type="primary"
+              size={"large"}
+              onClick={() => onDirect("/authentication/login")}
+            >
+              <div className="flex items-center">
+                <span className="mr-2">Login</span>
+                <LoginOutlined />
+              </div>
+            </Button>
+          </div>
+        </main>
+      </div>
     </div>
   );
-}
+};
+
+export default Home;

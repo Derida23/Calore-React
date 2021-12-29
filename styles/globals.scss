@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "SFPro";
+  src: local("SFPro"),
+    url(../libs/fonts/SFProDisplay-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "SFPro-Semi";
+  src: local("SFPro-Semi"),
+    url(../libs/fonts/SFProDisplay-Semibold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "SFPro-Bold";
+  src: local("SFPro-Bold"),
+    url(../libs/fonts/SFProDisplay-Bold.ttf) format("truetype");
+}
+
+:root {
+  --font-default: "SFPro", sans-serif;
+}
+
+*,
+html,
+body {
+  font-family: var(--font-default) !important;
+}
+
+body {
+  background-color: #e6e9f1;
+}
+
+.ant-modal-content {
+  top: 3rem;
+}
+
+.ant-input-affix-wrapper {
+  border-radius: 10px !important;
+}
+
+.ant-btn-primary {
+  border-radius: 12px !important;
+}
+
+.ant-select-selector {
+  border-radius: 10px !important;
+}
+
+textarea {
+  border-radius: 10px !important;
+}
+
+.card {
+  padding: 40px;
+  background: #fff;
+  border-radius: 20px;
+  margin: 60px auto;
+}
+
+.card-shadow {
+  box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+    0 15px 40px rgba(166, 173, 201, 0.2);
+}
+
+.text-general {
+  color: #252525;
+}
