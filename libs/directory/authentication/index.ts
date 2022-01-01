@@ -9,8 +9,8 @@ export const postRegister = async (dataRegister: IRegister) => {
       dataRegister
     );
 
-    return responseRegister;
+    return responseRegister.data;
   } catch (error) {
-    return error;
+    return error.response.data;
   }
 };

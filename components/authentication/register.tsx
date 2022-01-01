@@ -7,6 +7,7 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   KeyOutlined,
+  LoadingOutlined,
   MailOutlined,
   PhoneOutlined,
   UserAddOutlined,
@@ -17,6 +18,8 @@ import Forgot from "../modal/forgot";
 import { IDistrict, IProvince, IRegency } from "../../libs/interface/address";
 import { upperCase } from "../../libs";
 import { IRegister } from "../../libs/interface/authentication";
+import { IError, INotice } from "../../libs/interface/response";
+import ErrorField from "../notice/error";
 
 interface Props {
   props: PropsItem;
@@ -34,6 +37,8 @@ interface PropsItem {
   ) => void;
   dataSave: IRegister;
   onRegister: () => void;
+  isError?: IError;
+  loading: boolean;
 }
 
 const Register: FC<Props> = ({ props }) => {
@@ -47,6 +52,8 @@ const Register: FC<Props> = ({ props }) => {
     onInput,
     dataSave,
     onRegister,
+    isError,
+    loading,
   } = props;
 
   const router = useRouter();
@@ -89,7 +96,17 @@ const Register: FC<Props> = ({ props }) => {
                     prefix={<UserOutlined />}
                     onChange={onInput}
                     name="name"
+                    value={dataSave.name}
+                    disabled={loading}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "name")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
 
                 <div className="mb-3">
@@ -102,7 +119,17 @@ const Register: FC<Props> = ({ props }) => {
                     prefix={<MailOutlined />}
                     onChange={onInput}
                     name="email"
+                    disabled={loading}
+                    value={dataSave.email}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "email")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
               </div>
 
@@ -120,7 +147,17 @@ const Register: FC<Props> = ({ props }) => {
                     }
                     onChange={onInput}
                     name="password"
+                    disabled={loading}
+                    value={dataSave.password}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "password")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
 
                 <div className="mb-3">
@@ -136,7 +173,17 @@ const Register: FC<Props> = ({ props }) => {
                     }
                     onChange={onInput}
                     name="confirm_password"
+                    disabled={loading}
+                    value={dataSave.confirm_password}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "confirm_password")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
               </div>
 
@@ -151,7 +198,17 @@ const Register: FC<Props> = ({ props }) => {
                     prefix={<PhoneOutlined />}
                     onChange={onInput}
                     name="phone"
+                    disabled={loading}
+                    value={dataSave.phone}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "phone")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
               </div>
 
@@ -166,7 +223,17 @@ const Register: FC<Props> = ({ props }) => {
                     rows={4}
                     onChange={onInput}
                     name="address"
+                    disabled={loading}
+                    value={dataSave.address}
                   />
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "address")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
               </div>
 
@@ -182,6 +249,7 @@ const Register: FC<Props> = ({ props }) => {
                     className="w-full "
                     size="large"
                     onChange={onProvinces}
+                    disabled={loading}
                     filterOption={(input, option) =>
                       option.children
                         .toLowerCase()
@@ -191,12 +259,20 @@ const Register: FC<Props> = ({ props }) => {
                       dataSave.province_id === 0 ? null : dataSave.province_id
                     }
                   >
-                    {provinces.map((province) => (
-                      <Option value={province.id}>
+                    {provinces.map((province, index) => (
+                      <Option value={province.id} key={index}>
                         {upperCase(province.name)}
                       </Option>
                     ))}
                   </Select>
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "province")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
 
                 <div className="mb-3">
@@ -210,6 +286,7 @@ const Register: FC<Props> = ({ props }) => {
                     className="w-full"
                     size="large"
                     onChange={onRegencies}
+                    disabled={loading}
                     filterOption={(input, option) =>
                       option.children
                         .toLowerCase()
@@ -219,12 +296,20 @@ const Register: FC<Props> = ({ props }) => {
                       dataSave.regencie_id === 0 ? null : dataSave.regencie_id
                     }
                   >
-                    {regencies.map((regency) => (
-                      <Option value={regency.id}>
+                    {regencies.map((regency, index) => (
+                      <Option value={regency.id} key={index}>
                         {upperCase(regency.name)}
                       </Option>
                     ))}
                   </Select>
+                  {isError &&
+                    isError.data
+                      .filter((error) => error.param === "regency")
+                      .map((item, index) => (
+                        <div key={index}>
+                          <ErrorField message={item.msg} />
+                        </div>
+                      ))}
                 </div>
               </div>
 
@@ -241,6 +326,7 @@ const Register: FC<Props> = ({ props }) => {
                       className="w-full"
                       size="large"
                       onChange={onDistricts}
+                      disabled={loading}
                       filterOption={(input, option) =>
                         option.children
                           .toLowerCase()
@@ -250,12 +336,20 @@ const Register: FC<Props> = ({ props }) => {
                         dataSave.district_id === 0 ? null : dataSave.district_id
                       }
                     >
-                      {districts.map((district) => (
-                        <Option value={district.id}>
+                      {districts.map((district, index) => (
+                        <Option value={district.id} key={index}>
                           {upperCase(district.name)}
                         </Option>
                       ))}
                     </Select>
+                    {isError &&
+                      isError.data
+                        .filter((error) => error.param === "district")
+                        .map((item, index) => (
+                          <div key={index}>
+                            <ErrorField message={item.msg} />
+                          </div>
+                        ))}
                   </div>
                 </div>
               </div>
@@ -267,10 +361,11 @@ const Register: FC<Props> = ({ props }) => {
                     type="primary"
                     size={"large"}
                     onClick={onRegister}
+                    disabled={loading}
                   >
                     <div className="flex items-center justify-center">
                       <span className="mr-2">Register</span>
-                      <UserAddOutlined />
+                      {loading ? <LoadingOutlined /> : <UserAddOutlined />}
                     </div>
                   </Button>
                 </div>
