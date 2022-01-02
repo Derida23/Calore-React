@@ -10,3 +10,8 @@ export interface IRegister {
   regencie_id: number;
   province_id: number;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}

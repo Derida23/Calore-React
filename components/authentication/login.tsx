@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import styles from "../../styles/Auth.module.scss";
 import "antd/dist/antd.css";
 import { useRouter } from "next/router";
@@ -7,13 +7,33 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   KeyOutlined,
+  LoadingOutlined,
   LoginOutlined,
   MailOutlined,
 } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import Forgot from "../modal/forgot";
+import { IError } from "../../libs/interface/response";
+import { ILogin } from "../../libs/interface/authentication";
+import ErrorField from "../notice/error";
 
-const Login = () => {
+interface Props {
+  props: PropsItem;
+}
+
+interface PropsItem {
+  onInput: (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  dataLogin: ILogin;
+  onLogin: () => void;
+  isError?: IError;
+  loading: boolean;
+}
+
+const Login: FC<Props> = ({ props }) => {
+  const { onInput, dataLogin, onLogin, isError, loading } = props;
+
   const router = useRouter();
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -49,7 +69,19 @@ const Login = () => {
                 size="large"
                 placeholder="Email ID"
                 prefix={<MailOutlined />}
+                onChange={onInput}
+                name="email"
+                value={dataLogin.email}
+                disabled={loading}
               />
+              {isError &&
+                isError.data
+                  .filter((error) => error.param === "email")
+                  .map((item, index) => (
+                    <div key={index}>
+                      <ErrorField message={item.msg} />
+                    </div>
+                  ))}
             </div>
             <div className="my-3">
               <Input.Password
@@ -59,7 +91,19 @@ const Login = () => {
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
+                onChange={onInput}
+                name="password"
+                value={dataLogin.password}
+                disabled={loading}
               />
+              {isError &&
+                isError.data
+                  .filter((error) => error.param === "password")
+                  .map((item, index) => (
+                    <div key={index}>
+                      <ErrorField message={item.msg} />
+                    </div>
+                  ))}
             </div>
           </div>
           <p
@@ -73,11 +117,12 @@ const Login = () => {
               className=" w-full"
               type="primary"
               size={"large"}
-              onClick={() => onDirect("/")}
+              onClick={onLogin}
+              disabled={loading}
             >
               <div className="flex items-center justify-center">
                 <span className="mr-2">Login</span>
-                <LoginOutlined />
+                {loading ? <LoadingOutlined /> : <LoginOutlined />}
               </div>
             </Button>
           </div>

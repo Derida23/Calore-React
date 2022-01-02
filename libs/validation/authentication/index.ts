@@ -1,4 +1,4 @@
-import { IRegister } from "../../interface/authentication";
+import { ILogin, IRegister } from "../../interface/authentication";
 
 export const validateRegister = async (dataRegister: IRegister) => {
   let errors = { code: 422, message: "validation error", data: [] };
@@ -127,6 +127,34 @@ export const validateRegister = async (dataRegister: IRegister) => {
       value: "",
       msg: "district is required",
       param: "district",
+      location: "client",
+    });
+  }
+
+  if (errors.data.length) {
+    return errors;
+  } else {
+    return null;
+  }
+};
+
+export const validateLogin = async (dataLogin: ILogin) => {
+  let errors = { code: 422, message: "validation error", data: [] };
+
+  if (!dataLogin.email) {
+    errors.data.push({
+      value: "",
+      msg: "email is required",
+      param: "email",
+      location: "client",
+    });
+  }
+
+  if (!dataLogin.password) {
+    errors.data.push({
+      value: "",
+      msg: "password is required",
+      param: "password",
       location: "client",
     });
   }
