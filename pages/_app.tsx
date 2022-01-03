@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         height={3}
         showOnShallow={true}
       />
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
       <Footer />
     </>
   );

@@ -105,7 +105,7 @@ const RegisterPage: FC<Props> = ({ DATA_PROVINCES }) => {
 
       if (responseRegister.code < 400) {
         await setCookies("__SUTK", responseRegister.data.token);
-        await setCookies("__UUID", responseRegister.data.user.toString());
+        await setCookies("__UUID", JSON.stringify(responseRegister.data.user));
 
         setTimeout(() => {
           onDirect("/");

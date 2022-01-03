@@ -58,7 +58,7 @@ const LoginPage = () => {
 
       if (responseLogin.code < 400) {
         await setCookies("__SUTK", responseLogin.data.token);
-        await setCookies("__UUID", responseLogin.data.user.toString());
+        await setCookies("__UUID", JSON.stringify(responseLogin.data.user));
 
         setTimeout(() => {
           onDirect("/");

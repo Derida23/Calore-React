@@ -69,3 +69,10 @@ export const deleteCookies = (name: string) => {
 
   return data;
 };
+
+export const auth = async () => {
+  let token = await getCookies("__SUTK");
+  let profile = await getCookies("__UUID");
+
+  return { token, profile };
+};
