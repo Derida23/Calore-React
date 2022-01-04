@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import { Footer } from "../components/footer";
 import "../styles/globals.scss";
 import NextNprogress from "nextjs-progressbar";
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         height={3}
         showOnShallow={true}
       />
-      <Component {...pageProps} />
+      <SessionProvider>
+        <Component {...pageProps} />
+      </SessionProvider>
       <Footer />
     </>
   );

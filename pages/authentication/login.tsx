@@ -8,13 +8,22 @@ import { ILogin } from "../../libs/interface/authentication";
 import { IError, INotice } from "../../libs/interface/response";
 import { validateLogin } from "../../libs/validation/authentication";
 
+import { signIn, useSession } from "next-auth/react";
+
 const DEFAULT_SAVE: ILogin = {
-  email: "",
-  password: "",
+  email: "beny@gmail.com",
+  password: "Beny@123",
 };
 
 const LoginPage = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  const onDirect = (url: string) => {
+    router.push(url);
+  };
+
+  if (session && status !== "unauthenticated") onDirect("/");
 
   const [dataLogin, setDataLogin] = useState<ILogin>(DEFAULT_SAVE);
 
@@ -25,10 +34,6 @@ const LoginPage = () => {
     message: "",
     open: false,
   });
-
-  const onDirect = (url: string) => {
-    router.push(url);
-  };
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,6 +62,12 @@ const LoginPage = () => {
       });
 
       if (responseLogin.code < 400) {
+        const res = await signIn("credentials", {
+          redirect: false,
+          email: dataLogin.email,
+          password: dataLogin.password,
+          callbackUrl: `${window.location.origin}`,
+        });
         await setCookies("__SUTK", responseLogin.data.token);
         await setCookies("__UUID", JSON.stringify(responseLogin.data.user));
 

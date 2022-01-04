@@ -18,9 +18,11 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { auth, deleteCookies } from "../libs";
+import { signOut } from "next-auth/react";
 
 const Home = () => {
   const router = useRouter();
+
   const [isOpen, setOpen] = useState<boolean>(false);
   const [token, setToken] = useState<string>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -46,6 +48,7 @@ const Home = () => {
     deleteCookies("__UUID");
     deleteCookies("__SUTK");
     setToken(null);
+    signOut();
     setLoading(false);
   };
 
