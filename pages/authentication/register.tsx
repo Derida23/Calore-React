@@ -14,6 +14,7 @@ import { IDistrict, IProvince, IRegency } from "../../libs/interface/address";
 import { IRegister } from "../../libs/interface/authentication";
 import { IError, INotice } from "../../libs/interface/response";
 import { validateRegister } from "../../libs/validation/authentication";
+import { signIn, useSession } from "next-auth/react";
 
 interface Props {
   DATA_PROVINCES: Array<IProvince>;
@@ -33,7 +34,14 @@ const DEFAULT_SAVE: IRegister = {
 };
 
 const RegisterPage: FC<Props> = ({ DATA_PROVINCES }) => {
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  const onDirect = (url: string) => {
+    router.push(url);
+  };
+
+  if (session && status !== "unauthenticated") onDirect("/");
 
   const [provinces, setProvinces] = useState<Array<IProvince>>(DATA_PROVINCES);
   const [regencies, setRegencies] = useState<Array<IRegency>>([]);
@@ -47,10 +55,6 @@ const RegisterPage: FC<Props> = ({ DATA_PROVINCES }) => {
     message: "",
     open: false,
   });
-
-  const onDirect = (url: string) => {
-    router.push(url);
-  };
 
   const onInput = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -106,7 +110,12 @@ const RegisterPage: FC<Props> = ({ DATA_PROVINCES }) => {
       if (responseRegister.code < 400) {
         await setCookies("__SUTK", responseRegister.data.token);
         await setCookies("__UUID", JSON.stringify(responseRegister.data.user));
-
+        await signIn("credentials", {
+          redirect: false,
+          email: dataSave.email,
+          password: dataSave.password,
+          callbackUrl: `${window.location.origin}`,
+        });
         setTimeout(() => {
           onDirect("/");
         }, 5000);

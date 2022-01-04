@@ -11,8 +11,8 @@ import { validateLogin } from "../../libs/validation/authentication";
 import { signIn, useSession } from "next-auth/react";
 
 const DEFAULT_SAVE: ILogin = {
-  email: "beny@gmail.com",
-  password: "Beny@123",
+  email: "admin@calore.com",
+  password: "Beny@1234",
 };
 
 const LoginPage = () => {
@@ -62,7 +62,7 @@ const LoginPage = () => {
       });
 
       if (responseLogin.code < 400) {
-        const res = await signIn("credentials", {
+        await signIn("credentials", {
           redirect: false,
           email: dataLogin.email,
           password: dataLogin.password,

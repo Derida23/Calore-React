@@ -27,7 +27,7 @@ export const encrypt = async (hashed: string) => {
   return hash;
 };
 
-export const deconvert = async (hashed: string) => {
+export const decrypt = async (hashed: string) => {
   try {
     let bytes = CryptoJS.AES.decrypt(hashed, SALT);
     let result = await JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
@@ -57,7 +57,7 @@ export const getCookies = async (name: string) => {
   const dataCookies = await cookies.get(name.toString());
 
   if (dataCookies) {
-    const data = await deconvert(dataCookies);
+    const data = await decrypt(dataCookies);
     return data;
   } else {
     return null;
@@ -75,4 +75,12 @@ export const auth = async () => {
   let profile = await getCookies("__UUID");
 
   return { token, profile };
+};
+
+export const header = async (cookies: string) => {
+  const config = {
+    Authorization: "Bearer " + cookies,
+  };
+
+  return config;
 };

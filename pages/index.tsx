@@ -43,13 +43,10 @@ const Home = () => {
   }, []);
 
   const onLogout = async () => {
-    setLoading(true);
-
     deleteCookies("__UUID");
     deleteCookies("__SUTK");
     setToken(null);
     signOut();
-    setLoading(false);
   };
 
   return (
@@ -111,6 +108,7 @@ const Home = () => {
                     <p className="m-0 p-0 text-base font-medium ">Tax</p>
                   </div>
                   <div
+                    onClick={() => onDirect("/master/uom")}
                     className={`${styles.cardbox} text-center w-32 h-32 hover:text-blue-500`}
                   >
                     <ControlOutlined className="text-2xl mb-2" />
